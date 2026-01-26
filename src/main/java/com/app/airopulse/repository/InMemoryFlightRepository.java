@@ -14,10 +14,13 @@ public class InMemoryFlightRepository {
     private final Map<String, Flight> flights = new ConcurrentHashMap<>();
 
     public void save(Flight flight) {
+
         flights.put(flight.getFlightId(), flight);
     }
 
     public Optional<Flight> findById(String flightId) {
+        System.out.println(flightId);
+        System.out.println(flights);
         return Optional.ofNullable(flights.get(flightId));
     }
 
