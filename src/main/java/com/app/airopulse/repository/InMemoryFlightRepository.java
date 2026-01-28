@@ -14,7 +14,7 @@ public class InMemoryFlightRepository {
     private final Map<String, Flight> flights = new ConcurrentHashMap<>();
 
     public void save(Flight flight) {
-
+        System.out.println(flight);
         flights.put(flight.getFlightId(), flight);
     }
 
