@@ -4,6 +4,7 @@ import com.app.airopulse.model.Flight;
 import com.app.airopulse.model.Route;
 import com.app.airopulse.repository.InMemoryFlightRepository;
 import org.springframework.stereotype.Service;
+import com.app.airopulse.dto.FlightCreateRequest;
 
 import java.util.Collection;
 
@@ -16,23 +17,18 @@ public class FlightService {
         this.repository = repository;
     }
 
-    public Flight createFlight(String flightId,
-                               String airline,
-                               String source,
-                               String destination,
-                               long departureTime,
-                               long arrivalTime) {
+    public Flight createFlight(FlightCreateRequest flightCreateRequest) {
 
-        if (repository.exists(flightId)) {
-            throw new IllegalArgumentException("Flight already exists: " + flightId);
+        if (repository.exists(flightCreateRequest.flightId())) {
+            throw new IllegalArgumentException("Flight already exists: " + flightCreateRequest.flightId());
         }
 
         Flight flight = new Flight(
-                flightId,
-                airline,
-                new Route(source, destination),
-                departureTime,
-                arrivalTime
+                flightCreateRequest.flightId(),
+                flightCreateRequest.airline(),
+                new Route(flightCreateRequest.source(), flightCreateRequest.destination()),
+                flightCreateRequest.departureTime(),
+                flightCreateRequest.arrivalTime()
         );
 
         repository.save(flight);
