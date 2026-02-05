@@ -1,6 +1,9 @@
 package com.app.airopulse.service;
 
+import com.app.airopulse.dto.FlightLocationUpdateRequest;
+import com.app.airopulse.dto.FlightStatusUpdateRequest;
 import com.app.airopulse.model.Flight;
+import com.app.airopulse.model.GeoLocation;
 import com.app.airopulse.model.Route;
 import com.app.airopulse.repository.InMemoryFlightRepository;
 import org.springframework.stereotype.Service;
@@ -42,5 +45,30 @@ public class FlightService {
 
     public Collection<Flight> getAllFlights() {
         return repository.findAll();
+    }
+
+
+
+
+    public Flight updateStatus(String flightId, FlightStatusUpdateRequest request) {
+
+        Flight flight = getFlight(flightId);
+
+        // Simple rule for now (we'll harden later)
+        flight.updateStatus(request.status());
+
+        return flight;
+    }
+
+
+    public Flight updateLocation(String flightId, FlightLocationUpdateRequest request) {
+
+        Flight flight = getFlight(flightId);
+
+        flight.updateLocation(
+                new GeoLocation(request.latitude(), request.longitude())
+        );
+
+        return flight;
     }
 }

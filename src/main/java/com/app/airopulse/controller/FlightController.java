@@ -1,6 +1,8 @@
 package com.app.airopulse.controller;
 
 import com.app.airopulse.dto.FlightCreateRequest;
+import com.app.airopulse.dto.FlightLocationUpdateRequest;
+import com.app.airopulse.dto.FlightStatusUpdateRequest;
 import com.app.airopulse.model.Flight;
 import com.app.airopulse.service.FlightService;
 import org.springframework.web.bind.annotation.*;
@@ -36,4 +38,24 @@ public class FlightController {
     public Collection<Flight> getAllFlights() {
         return flightService.getAllFlights();
     }
+
+
+
+    @PatchMapping("/{id}/status")
+    public Flight updateStatus(
+            @PathVariable String id,
+            @RequestBody FlightStatusUpdateRequest request
+    ) {
+        return flightService.updateStatus(id, request);
+    }
+
+
+    @PatchMapping("/{id}/location")
+    public Flight updateLocation(
+            @PathVariable String id,
+            @RequestBody FlightLocationUpdateRequest request
+    ) {
+        return flightService.updateLocation(id, request);
+    }
+
 }
