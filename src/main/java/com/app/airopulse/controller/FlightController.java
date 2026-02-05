@@ -1,5 +1,6 @@
 package com.app.airopulse.controller;
 
+import com.app.airopulse.dto.FlightCreateRequest;
 import com.app.airopulse.model.Flight;
 import com.app.airopulse.service.FlightService;
 import org.springframework.web.bind.annotation.*;
@@ -18,20 +19,10 @@ public class FlightController {
 
     @PostMapping
     public Flight createFlight(
-            @RequestParam String flightId,
-            @RequestParam String airline,
-            @RequestParam String source,
-            @RequestParam String destination,
-            @RequestParam long departureTime,
-            @RequestParam long arrivalTime
-    ) {
+            @RequestBody FlightCreateRequest flightCreateRequest
+            ) {
         return flightService.createFlight(
-                flightId,
-                airline,
-                source,
-                destination,
-                departureTime,
-                arrivalTime
+                flightCreateRequest
         );
     }
 
