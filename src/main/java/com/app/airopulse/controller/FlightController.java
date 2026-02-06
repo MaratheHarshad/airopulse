@@ -4,6 +4,7 @@ import com.app.airopulse.dto.FlightCreateRequest;
 import com.app.airopulse.dto.FlightLocationUpdateRequest;
 import com.app.airopulse.dto.FlightStatusUpdateRequest;
 import com.app.airopulse.model.Flight;
+import com.app.airopulse.model.FlightStatus;
 import com.app.airopulse.service.FlightService;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,5 +58,30 @@ public class FlightController {
     ) {
         return flightService.updateLocation(id, request);
     }
+
+    @GetMapping("/by-route")
+    public Collection<Flight> getByRoute(
+            @RequestParam String source,
+            @RequestParam String destination
+    ) {
+        return flightService.getFlightsByRoute(source, destination);
+    }
+
+    @GetMapping("/by-status")
+    public Collection<Flight> getByStatus(
+            @RequestParam FlightStatus status
+    ) {
+        return flightService.getFlightsByStatus(status);
+    }
+    @GetMapping("/delayed")
+    public Collection<Flight> getDelayedFlights(
+            @RequestParam(defaultValue = "5") int limit
+    ) {
+        return flightService.getTopDelayedFlights(limit);
+    }
+
+
+
+
 
 }

@@ -3,6 +3,7 @@ package com.app.airopulse.service;
 import com.app.airopulse.dto.FlightLocationUpdateRequest;
 import com.app.airopulse.dto.FlightStatusUpdateRequest;
 import com.app.airopulse.model.Flight;
+import com.app.airopulse.model.FlightStatus;
 import com.app.airopulse.model.GeoLocation;
 import com.app.airopulse.model.Route;
 import com.app.airopulse.repository.InMemoryFlightRepository;
@@ -73,4 +74,19 @@ public class FlightService {
 
         return flight;
     }
+
+    public Collection<Flight> getFlightsByRoute(String source, String destination) {
+        return repository.findByRoute(new Route(source, destination));
+    }
+
+    public Collection<Flight> getFlightsByStatus(FlightStatus status) {
+        return repository.findByStatus(status);
+    }
+
+    public Collection<Flight> getTopDelayedFlights(int limit) {
+        return repository.getTopDelayedFlights(limit);
+    }
+
+
+
 }
