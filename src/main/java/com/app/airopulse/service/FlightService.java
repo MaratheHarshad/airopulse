@@ -55,9 +55,11 @@ public class FlightService {
         Flight flight = getFlight(flightId);
 
         // Simple rule for now (we'll harden later)
-        flight.updateStatus(request.status());
+//        flight.updateStatus(request.status());
+        repository.updateStatus(flightId, request.status());
 
-        return flight;
+        return getFlight(flightId);
+
     }
 
 
