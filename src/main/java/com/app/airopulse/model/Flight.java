@@ -11,6 +11,8 @@ public class Flight {
     private long arrivalTime;
     private FlightStatus status;
     private GeoLocation location;
+    private String latestSummary;
+
 
     public Flight(String flightId,
                   String airline,
@@ -65,5 +67,14 @@ public class Flight {
 
     public void updateArrivalTime(long arrivalTime) {
         this.arrivalTime = arrivalTime;
+    }
+
+
+    public String getLatestSummary() {
+        return latestSummary;
+    }
+
+    public void setLatestSummary(String latestSummary) {
+        this.latestSummary = latestSummary;
     }
 }
