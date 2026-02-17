@@ -9,6 +9,11 @@ public class LLMConfig {
 
     @Bean
     public RestTemplate restTemplate() {
-        return new RestTemplate();
+
+        var factory = new org.springframework.http.client.SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(2000);   // 2 seconds
+        factory.setReadTimeout(3000);      // 3 seconds
+
+        return new RestTemplate(factory);
     }
 }
