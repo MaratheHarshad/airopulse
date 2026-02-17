@@ -1,5 +1,7 @@
 package com.app.airopulse.service;
 
+import com.app.airopulse.domain.event.FlightStatusChangedEvent;
+import com.app.airopulse.domain.handler.FlightSummaryEventHandler;
 import com.app.airopulse.dto.FlightLocationUpdateRequest;
 import com.app.airopulse.dto.FlightStatusUpdateRequest;
 import com.app.airopulse.integration.FlightSummaryClient;
@@ -18,10 +20,13 @@ public class FlightService {
 
     private final InMemoryFlightRepository repository;
     private final FlightSummaryClient summaryClient;
+    private final FlightSummaryEventHandler summaryEventHandler;
 
-    public FlightService(InMemoryFlightRepository repository, FlightSummaryClient summaryClient) {
+
+    public FlightService(InMemoryFlightRepository repository, FlightSummaryClient summaryClient, FlightSummaryEventHandler summaryEventHandler) {
         this.repository = repository;
         this.summaryClient = summaryClient;
+        this.summaryEventHandler = summaryEventHandler;
     }
 
     public Flight createFlight(FlightCreateRequest flightCreateRequest) {
@@ -57,20 +62,18 @@ public class FlightService {
     public Flight updateStatus(String flightId, FlightStatusUpdateRequest request) {
 
         Flight flight = getFlight(flightId);
+        FlightStatus oldStatus = flight.getStatus();
 
-        // Simple rule for now (we'll harden later)
-//        flight.updateStatus(request.status());
         repository.updateStatus(flightId, request.status());
 
+        FlightStatus newStatus = request.status();
 
-        try {
-            String summary = summaryClient.generateSummary(flight);
-            flight.setLatestSummary(summary);
-        } catch (Exception e) {
-            flight.setLatestSummary("Summary generation failed.");
-        }
+        FlightStatusChangedEvent event =
+                new FlightStatusChangedEvent(flight, oldStatus, newStatus);
 
-        return getFlight(flightId);
+        summaryEventHandler.handle(event);
+
+        return flight;
 
     }
 
