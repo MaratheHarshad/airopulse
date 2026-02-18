@@ -11,8 +11,8 @@ public class LLMConfig {
     public RestTemplate restTemplate() {
 
         var factory = new org.springframework.http.client.SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(2000);   // 2 seconds
-        factory.setReadTimeout(3000);      // 3 seconds
+        factory.setConnectTimeout(15000);   // 2 seconds
+        factory.setReadTimeout(16000);      // 3 seconds
 
         return new RestTemplate(factory);
     }
